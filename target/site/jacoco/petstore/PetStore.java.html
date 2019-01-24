@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetStore.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SE3PetStoreREST</a> &gt; <a href="index.source.html" class="el_package">petstore</a> &gt; <span class="el_source">PetStore.java</span></div><h1>PetStore.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package petstore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * The pet store.
+ * @author Nico Kuijpers
+ */
+public class PetStore {
+    
+    // The pets are stored in a map with key petId and value Pet-object
+    private final Map&lt;Integer,Pet&gt; pets;
+    
+    // Id for the next pet to be added to the store
+    private int nextPetId;
+    
+    // Instance of pet store (singleton pattern)
+    private static PetStore instance;
+
+    // Singleton pattern
+<span class="fc" id="L29">    private PetStore() {</span>
+        // Initially, there are no pets in the pet store
+<span class="fc" id="L31">        pets = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L32">        nextPetId = 0;</span>
+<span class="fc" id="L33">    }</span>
+    
+    /**
+     * Get singleton instance of pet store.
+     * @return instance of pet store
+     */
+    public static PetStore getInstance() {
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L41">            instance = new PetStore();</span>
+        }
+<span class="fc" id="L43">        return instance;</span>
+    } 
+    
+    /**
+     * Get pet with given id.
+     * @param petId
+     * @return pet with give id.
+     */
+    public Pet getPet(int petId) {
+<span class="fc" id="L52">        return pets.get(petId);</span>
+    }
+    
+    /**
+     * Get all pets in the store.
+     * @return all pets in the store
+     */
+    public List&lt;Pet&gt; getAllPets() {
+<span class="fc" id="L60">        return new ArrayList&lt;&gt;(pets.values());</span>
+    }
+    
+    /**
+     * Get all pets in the store with given owner name.
+     * @param ownerName name of the owner
+     * @return all pets in the store with given owner name.
+     */
+    public List&lt;Pet&gt; getAllPetsWithOwner(String ownerName) {
+<span class="fc" id="L69">        List petsWithOwner = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        for (Pet p : pets.values()) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            if (p.getOwnerName().equals(ownerName)) {</span>
+<span class="fc" id="L72">                petsWithOwner.add(p);</span>
+            }
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">        return petsWithOwner;</span>
+    }
+    
+    /**
+     * Add new pet to the pet store.
+     * @param petName name of the new pet
+     * @param ownerName name of the owner
+     * @return the new pet
+     */
+    public Pet addPet(String petName, String ownerName) {
+        // Define id for the new pet
+<span class="fc" id="L86">        int petId = nextPetId;</span>
+<span class="fc" id="L87">        nextPetId++;</span>
+        
+        // Create the new pet
+<span class="fc" id="L90">        Pet pet = new Pet(petId, petName, ownerName);</span>
+        
+        // Put the new pet in the pet store
+<span class="fc" id="L93">        pets.put(petId,pet);</span>
+        
+        // Return the new pet
+<span class="fc" id="L96">        return pet;</span>
+    }
+    
+    /**
+     * Change owner of pet with given id.
+     * @param petId id of pet
+     * @param ownerName name of the new owner
+     * @return true when owner has been successfully changed, false otherwise
+     */
+    public boolean changeOwner(int petId, String ownerName) {
+        // Get the pet wit given id from the pet store
+<span class="fc" id="L107">        Pet pet = pets.get(petId);</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (pet != null) {</span>
+            // Pet exists, change the name of the owner
+<span class="fc" id="L110">            pet.setOwnerName(ownerName);</span>
+<span class="fc" id="L111">            return true;</span>
+        }
+        // Pet not found
+<span class="nc" id="L114">        return false;</span>
+    }
+    
+    /**
+     * Remove pet with given id from the pet store.
+     * @param petId id of pet to be removed
+     * @return true when pet has been successfully removed, false otherwise
+     */
+    public boolean removePet(int petId) {
+<span class="fc" id="L123">        Pet petRemoved = pets.remove(petId);</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (petRemoved != null) {</span>
+            // Pet successfully removed
+<span class="fc" id="L126">            return true;</span>
+        }
+        // Pet not found
+<span class="nc" id="L129">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

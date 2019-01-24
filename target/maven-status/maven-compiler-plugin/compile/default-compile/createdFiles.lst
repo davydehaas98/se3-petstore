@@ -1,0 +1,9 @@
+restshared/PetStoreResponse.class
+restclient/PetStoreClient.class
+petstore/PetStore.class
+restclient/PetStoreClientMain.class
+restserver/PetStoreRESTService.class
+restshared/PetDTO.class
+restserver/RestResponseHelper.class
+petstore/Pet.class
+restserver/PetStoreServer.class

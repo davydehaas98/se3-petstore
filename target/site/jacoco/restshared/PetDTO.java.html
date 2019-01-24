@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SE3PetStoreREST</a> &gt; <a href="index.source.html" class="el_package">restshared</a> &gt; <span class="el_source">PetDTO.java</span></div><h1>PetDTO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package restshared;
+
+/**
+ * Data Transfer Object (DTO) for Pet.
+ * This class is used to communicate pet-data between client and server.
+ * @author Nico Kuijpers
+ */
+public class PetDTO {
+    // Identification of pet in pet store
+    private int petId;
+    
+    // Name of pet
+    private String petName;
+    
+    // Owner of pet
+    private String ownerName;
+    
+    /**
+     * No-argument constructor.
+     * Note that a no-argument constructor is
+     * required for data transfer objects when a
+     * constructor with arguments is also declared.
+     */
+<span class="fc" id="L29">    public PetDTO() {</span>
+        // Nothing
+<span class="fc" id="L31">    }</span>
+    
+    /**
+     * Constructor.
+     * @param petId     Identification of pet
+     * @param petName   Name of pet
+     * @param ownerName Owner of pet
+     */
+<span class="fc" id="L39">    public PetDTO(int petId, String petName, String ownerName) {</span>
+<span class="fc" id="L40">        this.petId = petId;</span>
+<span class="fc" id="L41">        this.petName = petName;</span>
+<span class="fc" id="L42">        this.ownerName = ownerName;</span>
+<span class="fc" id="L43">    }</span>
+
+    public int getPetId() {
+<span class="fc" id="L46">        return petId;</span>
+    }
+
+    public void setPetId(int petId) {
+<span class="fc" id="L50">        this.petId = petId;</span>
+<span class="fc" id="L51">    }</span>
+
+    public String getPetName() {
+<span class="fc" id="L54">        return petName;</span>
+    }
+
+    public void setPetName(String petName) {
+<span class="fc" id="L58">        this.petName = petName;</span>
+<span class="fc" id="L59">    }</span>
+
+    public String getOwnerName() {
+<span class="fc" id="L62">        return ownerName;</span>
+    }
+
+    public void setOwnerName(String ownerName) {
+<span class="fc" id="L66">        this.ownerName = ownerName;</span>
+<span class="fc" id="L67">    }</span>
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L71">        return &quot;id: &quot; + petId + &quot; name: &quot; + petName + &quot; owner: &quot; + ownerName;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

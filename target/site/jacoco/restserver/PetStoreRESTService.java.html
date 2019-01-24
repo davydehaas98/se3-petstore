@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetStoreRESTService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SE3PetStoreREST</a> &gt; <a href="index.source.html" class="el_package">restserver</a> &gt; <span class="el_source">PetStoreRESTService.java</span></div><h1>PetStoreRESTService.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package restserver;
+
+import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+import petstore.Pet;
+import petstore.PetStore;
+import restshared.PetDTO;
+
+/**
+ * REST service for pet store.
+ * Note that the service is stateless. 
+ * The state of the pet store is maintained within the pet store.
+ * The singleton pattern is used for the pet store to ensure that 
+ * only one instance of the pet store is being created.
+ * @author Nico Kuijpers
+ */
+@Path(&quot;/petstore&quot;)
+public class PetStoreRESTService {
+
+<span class="fc" id="L33">    public PetStoreRESTService() {</span>
+        // Nothing
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Find pet by ID.
+     * @param petIdAsString pet id (as string)
+     * @return the pet with given id
+     */
+    @GET
+    @Path(&quot;/pet/{petid}&quot;)
+    @Produces(&quot;application/json&quot;)
+    public Response getPet(@PathParam(&quot;petid&quot;) String petIdAsString) {
+        
+<span class="fc" id="L47">        System.out.println(&quot;[Server getPet]&quot;);</span>
+        
+        // Find pet
+<span class="fc" id="L50">        int petId = Integer.parseInt(petIdAsString);</span>
+<span class="fc" id="L51">        Pet petFromStore = PetStore.getInstance().getPet(petId);</span>
+        
+        // Check whether pet exists
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (petFromStore == null) {</span>
+            // Client error 400 - Bad Request
+<span class="nc" id="L56">            return Response.status(400).entity(RestResponseHelper.getErrorResponseString()).build();</span>
+        }
+        
+        // Define response
+<span class="fc" id="L60">        return Response.status(200).entity(RestResponseHelper.getSinglePetResponse(petFromStore)).build();</span>
+    }
+    
+    /**
+     * Get all pets in the pet store.
+     * @return all pets
+     */
+    @GET
+    @Path(&quot;/pet/all&quot;)
+    @Produces(&quot;application/json&quot;)
+    public Response getAllPets() {
+        
+<span class="fc" id="L72">        System.out.println(&quot;[Server getAllPets]&quot;);</span>
+        
+        // Get all pets from the store
+<span class="fc" id="L75">        List&lt;Pet&gt; allPetsFromStore = PetStore.getInstance().getAllPets();</span>
+
+        // Define response
+<span class="fc" id="L78">        return Response.status(200).entity(RestResponseHelper.getAllPetsResponse(RestResponseHelper.getPetDTOList(allPetsFromStore))).build();</span>
+    }
+    
+    /**
+     * Get all pets with owner corresponding to given owner name.
+     * @param ownerName name of the owner
+     * @return all pets from given owner
+     */
+    @GET
+    @Path(&quot;/pet/findByOwner/{owner}&quot;)
+    @Produces(&quot;application/json&quot;)
+    public Response getAllPetsWithOwner(@PathParam(&quot;owner&quot;) String ownerName) {
+        
+<span class="fc" id="L91">        System.out.println(&quot;[Server getAllPetsWithOwner]&quot;);</span>
+        
+        // Get all pets from the store with given owner name
+<span class="fc" id="L94">        List&lt;Pet&gt; allPetsFromStoreWithOwner = PetStore.getInstance().getAllPetsWithOwner(ownerName);</span>
+
+        // Define response
+<span class="fc" id="L97">        return Response.status(200).entity(RestResponseHelper.getAllPetsResponse(RestResponseHelper.getPetDTOList(allPetsFromStoreWithOwner))).build();</span>
+    }
+
+    /**
+     * Add a new pet to the store.
+     * @param petRequest data of the new pet
+     * @return the new pet
+     */
+    @POST
+    @Path(&quot;/pet&quot;)
+    @Consumes(&quot;application/json&quot;)
+    @Produces(&quot;application/json&quot;)
+    public Response addPet(PetDTO petRequest) {
+        
+<span class="fc" id="L111">        System.out.println(&quot;[Server addPet]&quot;);</span>
+        
+        // Check request
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (petRequest == null) {</span>
+            // Client error 400 - Bad Request
+<span class="nc" id="L116">            return Response.status(400).entity(RestResponseHelper.getErrorResponseString()).build();</span>
+        }
+        
+        // Add pet to store
+<span class="fc" id="L120">        String petName = petRequest.getPetName();</span>
+<span class="fc" id="L121">        String ownerName = petRequest.getOwnerName();</span>
+<span class="fc" id="L122">        Pet newPet = PetStore.getInstance().addPet(petName,ownerName);</span>
+        
+        // Define response
+<span class="fc" id="L125">        return Response.status(200).entity(RestResponseHelper.getSinglePetResponse(newPet)).build();</span>
+    }
+    
+    /**
+     * Change the name of the owner of a pet.
+     * @param petRequest contains the id of the pet and the new owner name
+     * @return success if name of owner has been changed, otherwise bad request
+     */
+    @PUT
+    @Path(&quot;/pet/changeOwner&quot;)
+    @Consumes(&quot;application/json&quot;)
+    @Produces(&quot;application/json&quot;)
+    public Response changeOwner(PetDTO petRequest) {
+        
+<span class="fc" id="L139">        System.out.println(&quot;[Server changeOwner]&quot;);</span>
+        
+        // Check request
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (petRequest == null) {</span>
+            // Client error 400 - Bad Request
+<span class="nc" id="L144">            return Response.status(400).entity(RestResponseHelper.getErrorResponseString()).build();</span>
+        }
+        
+        // Change owner of the pet
+<span class="fc" id="L148">        int petId = petRequest.getPetId();</span>
+<span class="fc" id="L149">        String ownerName = petRequest.getOwnerName();</span>
+<span class="fc" id="L150">        boolean success = PetStore.getInstance().changeOwner(petId,ownerName);</span>
+        
+        // Define response
+<span class="fc" id="L153">        return Response.status(200).entity(RestResponseHelper.getSuccessResponse(success)).build();</span>
+    }
+    
+    /**
+     * Remove pet with given pet id.
+     * @param petIdAsString pet id (as string)
+     * @return success if pet has been removed, otherwise bad request
+     */
+    @DELETE
+    @Path(&quot;/pet/{petid}&quot;)
+    @Produces(&quot;application/json&quot;)
+    public Response removePet(@PathParam(&quot;petid&quot;) String petIdAsString) {
+        
+<span class="fc" id="L166">        System.out.println(&quot;[Server removePet]&quot;);</span>
+        
+        // Find pet to be removed
+<span class="fc" id="L169">        int petId = Integer.parseInt(petIdAsString);</span>
+<span class="fc" id="L170">        Pet petFromStore = PetStore.getInstance().getPet(petId);</span>
+        
+        // Check whether pet exists
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (petFromStore == null) {</span>
+            // Client error 400 - Bad Request
+<span class="nc" id="L175">            return Response.status(400).entity(RestResponseHelper.getErrorResponseString()).build();</span>
+        }
+        
+        // Remove pet from the store
+<span class="fc" id="L179">        boolean success = PetStore.getInstance().removePet(petId);</span>
+        
+        // Return response
+<span class="fc" id="L182">        return Response.status(200).entity(RestResponseHelper.getSuccessResponse(success)).build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetStoreClientMain.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SE3PetStoreREST</a> &gt; <a href="index.source.html" class="el_package">restclient</a> &gt; <span class="el_source">PetStoreClientMain.java</span></div><h1>PetStoreClientMain.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package restclient;
+
+import java.util.List;
+import restshared.PetDTO;
+
+/**
+ * Main class for the pet store client.
+ * @author Nico Kuijpers
+ */
+<span class="nc" id="L15">public class PetStoreClientMain {</span>
+    
+    private static PetStoreClient petStoreClient;
+    
+    /**
+     * Main method for the pet store client.
+     * @param args
+     */
+    public static void main(String[] args) {
+        
+        // Create the pet store client
+<span class="nc" id="L26">        petStoreClient = new PetStoreClient();</span>
+        
+        // Inspect, add, change, and remove pets
+<span class="nc" id="L29">        showAllPetsInStore();</span>
+<span class="nc" id="L30">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L31">        System.out.println(&quot;Add Garfield&quot;);</span>
+<span class="nc" id="L32">        PetDTO garfield = petStoreClient.addPet(&quot;Garfield&quot;, &quot;Jon&quot;);</span>
+<span class="nc" id="L33">        System.out.println(&quot;Pet &quot; + garfield + &quot; added to the store&quot;);</span>
+<span class="nc" id="L34">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L35">        System.out.println(&quot;Add Odie&quot;);</span>
+<span class="nc" id="L36">        PetDTO odie = petStoreClient.addPet(&quot;Odie&quot;,&quot;Jon&quot;);</span>
+<span class="nc" id="L37">        System.out.println(&quot;Pet &quot; + odie + &quot; added to the store&quot;);</span>
+<span class="nc" id="L38">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L39">        showAllPetsInStore();</span>
+<span class="nc" id="L40">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L41">        System.out.println(&quot;Get the cat Garfield from the store&quot;);</span>
+<span class="nc" id="L42">        PetDTO cat = petStoreClient.getPet(garfield.getPetId());</span>
+<span class="nc" id="L43">        System.out.println(&quot;Cat &quot; + cat + &quot; obtained from the store&quot;);</span>
+<span class="nc" id="L44">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L45">        System.out.println(&quot;Get the dog Odie from the store&quot;);</span>
+<span class="nc" id="L46">        PetDTO dog = petStoreClient.getPet(odie.getPetId());</span>
+<span class="nc" id="L47">        System.out.println(&quot;Dog &quot; + dog + &quot; obtained from the store&quot;);</span>
+<span class="nc" id="L48">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L49">        showAllPetsInStoreWithOwner(&quot;Jon&quot;);</span>
+<span class="nc" id="L50">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L51">        System.out.println(&quot;Change owner name of both pets from Jon to Jon Arbuckle&quot;);</span>
+<span class="nc" id="L52">        petStoreClient.changeOwner(garfield.getPetId(), &quot;Jon Arbuckle&quot;);</span>
+<span class="nc" id="L53">        petStoreClient.changeOwner(odie.getPetId(), &quot;Jon Arbuckle&quot;);</span>
+<span class="nc" id="L54">        showAllPetsInStoreWithOwner(&quot;Jon&quot;);</span>
+<span class="nc" id="L55">        showAllPetsInStoreWithOwner(&quot;Jon Arbuckle&quot;);</span>
+<span class="nc" id="L56">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L57">        System.out.println(&quot;Remove Garfield from the store&quot;);</span>
+<span class="nc" id="L58">        petStoreClient.removePet(garfield.getPetId());</span>
+<span class="nc" id="L59">        showAllPetsInStore();</span>
+<span class="nc" id="L60">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L61">        System.out.println(&quot;Remove Odie from the store&quot;);</span>
+<span class="nc" id="L62">        petStoreClient.removePet(odie.getPetId());</span>
+<span class="nc" id="L63">        showAllPetsInStore();</span>
+<span class="nc" id="L64">    }</span>
+    
+    // Show data of all pets in the store
+    private static void showAllPetsInStore() {
+<span class="nc" id="L68">        List&lt;PetDTO&gt; allPets = petStoreClient.getAllPets();</span>
+<span class="nc" id="L69">        System.out.println(&quot;Number of pets in the store: &quot; + allPets.size());</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (allPets.size() &gt; 0) {</span>
+<span class="nc" id="L71">            System.out.println(&quot;Pets in the store:&quot;);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            for (PetDTO p : allPets) {</span>
+<span class="nc" id="L73">                System.out.println(&quot;   &quot; + p);</span>
+<span class="nc" id="L74">            }</span>
+        }
+<span class="nc" id="L76">    }</span>
+    
+    // Show data of all pets in the store with given owner
+    private static void showAllPetsInStoreWithOwner(String ownerName) {
+<span class="nc" id="L80">        List&lt;PetDTO&gt; allPetsWithOwner = petStoreClient.getAllPetsWithOwner(ownerName);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (allPetsWithOwner.size() == 0) {</span>
+<span class="nc" id="L82">            System.out.println(&quot;There are no pets in the store with owner &quot; + ownerName);</span>
+        } else {
+<span class="nc" id="L84">            System.out.println(&quot;Pets in the store with owner &quot; + ownerName + &quot; :&quot;);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            for (PetDTO p : allPetsWithOwner) {</span>
+<span class="nc" id="L86">                System.out.println(&quot;   &quot; + p);</span>
+<span class="nc" id="L87">            }</span>
+        }
+<span class="nc" id="L89">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
